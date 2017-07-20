@@ -237,12 +237,16 @@ function inject(state, action, props, scenes) {
       const incomingChildWasActive = incomingChild.children.length > 1;
       const activeChildIsIncomingChild = activeChild.sceneKey === action.key;
       if (incomingChildHadTabs || !incomingChildWasActive || activeChildIsIncomingChild) {
-        state.children[ind] = getInitialState(
+        const nextState = getInitialState(
           { ...props },
           scenes,
           state.index,
           { ...action, parentIndex: state.children[ind].parentIndex },
         );
+        state.children[ind] = {
+          ...state.children[ind],
+          ...nextState,
+        }
       }
 
       if (action.unmountScenes) {
